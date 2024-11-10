@@ -5,7 +5,7 @@ type Employee {
   dateOfBirth: String
   city: String
   salary: Float
-  gender: String?
+  gender: String
   email: String!
 }
 
@@ -18,14 +18,23 @@ type Query {
   employee(id: ID!): Employee
 }
 
+input CreateEmployeeInput{
+    name: String,
+    dateOfBirth: String,
+    city: String,
+    salary: Float,
+    gender: String,
+    email: String
+}
+
 # Define the mutations
 type Mutation {
   # Add a new employee
-  addEmployee(name: String!, dateOfBirth: String, city: String, salary: Float, gender: String?, email: String!): Employee
+  addEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   
   # Update an existing employee
-  updateEmployee(id: ID!, name: String!, dateOfBirth: String, city: String, salary: Float, gender: String?, email: String!): Employee
+  updateEmployee(id: ID!, name: String!, dateOfBirth: String, city: String, salary: Float, gender: String, email: String!): Employee
   
   # Delete an employee by ID
-  deleteEmployee(id: ID!): Employee
+  deleteEmployee(id: ID!): Boolean
 }

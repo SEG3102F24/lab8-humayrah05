@@ -24,45 +24,45 @@ class EmployeesResolver(private val employeesRepository: EmployeesRepository,
 
     @QueryMapping
     fun employeeById(@Argument id: String): Employee? {
-        return employeeRepository.findById(id).orElse(null)
+        return employeesRepository.findById(id).orElse(null)
     }
 
      @MutationMapping
-    fun addEmployee(
-        @Argument name: String,
-        @Argument dateOfBirth: String,
-        @Argument city: String,
-        @Argument salary: Float,
-        @Argument gender: String?,
-        @Argument email: String
-    ): Employee {
-        val newEmployee = Employee(name = name, dateOfBirth = dateOfBirth, city = city, salary = salary, gender = gender, email = email)
-        return employeeRepository.save(newEmployee)
+    fun addEmployee(@Argument("createEmployeeInput") input: CreateEmployeeInput) : Employee{
+        if (input.name != null) {
+        val employee = Employee(input.name, input.dateOfBirth, input.city, input.salary, input.gender, input.email)
+        employee.id = UUID.randomUUID().toString()
+        employeesRepository.save(employee)
+        return employee
+        } else {
+            throw Exception("Invalid input")
+        }
     }
+    
 
     @MutationMapping
     fun updateEmployee(
+        @Argument id: String,
         @Argument name: String,
-        @Argument dateOfBirth: String,
-        @Argument city: String,
-        @Argument salary: Float,
+        @Argument dateOfBirth: String?,
+        @Argument city: String?,
+        @Argument salary: Float?,
         @Argument gender: String?,
-        @Argument email: String
+        @Argument email: String?
     ): Employee? {
-        val employee = employeeRepository.findById(id).orElse(null) ?: return null
-        if (name != null) employee.name = name
+        val employee = employeesRepository.findById(id).orElse(null) ?: return null
         if (dateOfBirth != null) employee.dateOfBirth = dateOfBirth
         if (city != null) employee.city = city
         if (salary != null) employee.salary = salary
         if (gender != null) employee.gender = gender
         if (email != null) employee.email = email
-        return employeeRepository.save(employee)
+        return employeesRepository.save(employee)
     }
 
     @MutationMapping
     fun deleteEmployee(@Argument id: String): Employee? {
-        val employee = employeeRepository.findById(id).orElse(null) ?: return null
-        employeeRepository.delete(employee)
+        val employee = employeesRepository.findById(id).orElse(null) ?: return null
+        employeesRepository.delete(employee)
         return employee
     }
 }
