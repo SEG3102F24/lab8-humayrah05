@@ -30,26 +30,31 @@ class EmployeesResolver(private val employeesRepository: EmployeesRepository,
      @MutationMapping
     fun addEmployee(
         @Argument name: String,
-        @Argument position: String,
-        @Argument department: String,
+        @Argument dateOfBirth: String,
+        @Argument city: String,
+        @Argument salary: Float,
+        @Argument gender: String?,
         @Argument email: String
     ): Employee {
-        val newEmployee = Employee(name = name, position = position, department = department, email = email)
+        val newEmployee = Employee(name = name, dateOfBirth = dateOfBirth, city = city, salary = salary, gender = gender, email = email)
         return employeeRepository.save(newEmployee)
     }
 
     @MutationMapping
     fun updateEmployee(
-        @Argument id: String,
-        @Argument name: String?,
-        @Argument position: String?,
-        @Argument department: String?,
-        @Argument email: String?
+        @Argument name: String,
+        @Argument dateOfBirth: String,
+        @Argument city: String,
+        @Argument salary: Float,
+        @Argument gender: String?,
+        @Argument email: String
     ): Employee? {
         val employee = employeeRepository.findById(id).orElse(null) ?: return null
         if (name != null) employee.name = name
-        if (position != null) employee.position = position
-        if (department != null) employee.department = department
+        if (dateOfBirth != null) employee.dateOfBirth = dateOfBirth
+        if (city != null) employee.city = city
+        if (salary != null) employee.salary = salary
+        if (gender != null) employee.gender = gender
         if (email != null) employee.email = email
         return employeeRepository.save(employee)
     }
