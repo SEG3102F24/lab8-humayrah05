@@ -1,1 +1,31 @@
+# Define the Employee type
+type Employee {
+  id: ID!
+  name: String!
+  dateOfBirth: String
+  city: String
+  salary: Float
+  gender: String?
+  email: String!
+}
 
+# Define the queries
+type Query {
+  # Fetch all employees
+  employees: [Employee]
+  
+  # Fetch a single employee by ID
+  employee(id: ID!): Employee
+}
+
+# Define the mutations
+type Mutation {
+  # Add a new employee
+  addEmployee(name: String!, dateOfBirth: String, city: String, salary: Float, gender: String?, email: String!): Employee
+  
+  # Update an existing employee
+  updateEmployee(id: ID!, name: String!, dateOfBirth: String, city: String, salary: Float, gender: String?, email: String!): Employee
+  
+  # Delete an employee by ID
+  deleteEmployee(id: ID!): Employee
+}
