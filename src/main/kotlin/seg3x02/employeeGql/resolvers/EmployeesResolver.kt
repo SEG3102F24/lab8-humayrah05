@@ -39,31 +39,15 @@ class EmployeesResolver(private val employeesRepository: EmployeesRepository,
         }
     }
     
-
     @MutationMapping
-    fun updateEmployee(
-        @Argument id: String,
-        @Argument name: String,
-        @Argument dateOfBirth: String?,
-        @Argument city: String?,
-        @Argument salary: Float?,
-        @Argument gender: String?,
-        @Argument email: String?
-    ): Employee? {
-        val employee = employeesRepository.findById(id).orElse(null) ?: return null
-        if (dateOfBirth != null) employee.dateOfBirth = dateOfBirth
-        if (city != null) employee.city = city
-        if (salary != null) employee.salary = salary
-        if (gender != null) employee.gender = gender
-        if (email != null) employee.email = email
-        return employeesRepository.save(employee)
-    }
-
-    @MutationMapping
-    fun deleteEmployee(@Argument id: String): Employee? {
-        val employee = employeesRepository.findById(id).orElse(null) ?: return null
-        employeesRepository.delete(employee)
-        return employee
-    }
+    fun deleteEmployee(@Argument id: String): Boolean {
+        val employee = employeesRepository.findById(id).orElse(null)  
+        return if (employee != null) {
+            employeesRepository.delete(employee) 
+            true  
+        } else {
+            false 
+        }
 }
 
+}

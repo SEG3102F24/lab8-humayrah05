@@ -32,9 +32,6 @@ type Mutation {
   # Add a new employee
   addEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   
-  # Update an existing employee
-  updateEmployee(id: ID!, name: String!, dateOfBirth: String, city: String, salary: Float, gender: String, email: String!): Employee
-  
   # Delete an employee by ID
   deleteEmployee(id: ID!): Boolean
 }
